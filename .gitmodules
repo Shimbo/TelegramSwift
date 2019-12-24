@@ -3,19 +3,20 @@
 	url = https://github.com/peter-iakovlev/Signals.git
 [submodule "submodules/libtgvoip"]
 	path = submodules/libtgvoip
-url=https://github.com/telegramdesktop/libtgvoip
+	url = https://github.com/telegramdesktop/libtgvoip
 [submodule "submodules/Sparkle"]
 	path = submodules/Sparkle
-url=https://github.com/overtake/Sparkle
+	url = https://github.com/overtake/Sparkle
 [submodule "submodules/Zip"]
 	path = submodules/Zip
 	url = https://github.com/overtake/Zip
 [submodule "submodules/lottie-ios"]
 	path = submodules/lottie-ios
-url=https://github.com/overtake/lottie-ios.git
+	url = https://github.com/overtake/lottie-ios.git
 [submodule "submodules/telegram-ios"]
 	path = submodules/telegram-ios
-url=https://github.com/michaelenco/Telegram-iOS.git
+	url = https://github.com/Shimbo/Telegram-iOS.git
+	branch = circles
 [submodule "submodules/rlottie"]
 	path = submodules/rlottie
-url=https://github.com/overtake/rlottie.git
+	url = https://github.com/overtake/rlottie.git
