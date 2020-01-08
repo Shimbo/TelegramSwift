@@ -36,7 +36,7 @@ class ShareViewController: NSViewController {
         declareEncodable(InAppNotificationSettings.self, f: { InAppNotificationSettings(decoder: $0) })
 
         
-        let appGroupName = "6N38VWS5BX.ru.keepcoder.Telegram"
+        let appGroupName = "WDEGJM2L33.com.circlescollective.circlesfortelegram"
         guard let containerUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupName) else {
             return
         }

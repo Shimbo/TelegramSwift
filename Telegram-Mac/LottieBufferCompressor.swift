@@ -129,7 +129,7 @@ final class TRLotData {
     
     
     fileprivate static var directory: String {
-        let appGroupName = "6N38VWS5BX.ru.keepcoder.Telegram"
+        let appGroupName = "WDEGJM2L33.com.circlescollective.circlesfortelegram"
         let groupPath = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupName)!.path
         
         let path = groupPath + "/trlottie-animations/"
