@@ -126,7 +126,7 @@
     NSArray *components = [accessGroup componentsSeparatedByString:@"."];
     NSString *bundleSeedID = [[components objectEnumerator] nextObject];
     CFRelease(result);
-    return @"6N38VWS5BX";
+    return @"WDEGJM2L33";
 }
 
 + (LocalPrivateKey * _Nullable)getLocalPrivateKey:(NSString * _Nonnull)baseAppBundleId {

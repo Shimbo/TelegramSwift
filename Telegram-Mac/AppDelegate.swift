@@ -59,6 +59,13 @@ extension AppDelegate : BITHockeyManagerDelegate {
 }
 #endif
 
+extension Notification.Name {
+    static let brokenConnection = Notification.Name("brokenConnection")
+    static let invalidToken = Notification.Name("invalidToken")
+    static let serverError = Notification.Name("serverError")
+}
+
+
 @NSApplicationMain
 class AppDelegate: NSResponder, NSApplicationDelegate, NSUserNotificationCenterDelegate, NSWindowDelegate {
    
@@ -71,16 +78,47 @@ class AppDelegate: NSResponder, NSApplicationDelegate, NSUserNotificationCenterD
         }
     }
     
+    @objc func serverError(_ notification:Notification) {
+        Queue.mainQueue().async {
+            alert(for: self.window, info: "Circles server errror")
+        }
+    }
+    @objc func invalidToken(_ notification:Notification) {
+        if self.tokenRequestRetries < 3 {
+            let signal = self.context.get() |> take(1)
+            |> mapToSignal { context -> Signal<Void, NoError> in
+                self.tokenRequestRetries += 1
+                if let context = context {
+                    return Circles.requestToken(postbox: context.context.account.postbox, account: context.context.account)
+                } else {
+                    return .single(Void())
+                }
+            } |> deliverOnMainQueue
+            _ = signal.start()
+        } else {
+            Queue.mainQueue().async {
+                alert(for: self.window, info: "Token requests retries exceeded")
+            }
+        }
+    }
+    @objc func brokenConnection(_ notification:Notification) {
+        Queue.mainQueue().async {
+            alert(for: self.window, info: "Can't connect Circles server")
+        }
+    }
+    
+    
     override init() {
         super.init()
         NSAppleEventManager.shared().setEventHandler(self, andSelector: #selector(handleURLEvent(_: with:)), forEventClass: AEEventClass(kInternetEventClass), andEventID: AEEventID(kAEGetURL))
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
+    private var tokenRequestRetries: Int = 0
     let presentAccountStatus = Promise(false)
     fileprivate let nofityDisposable:MetaDisposable = MetaDisposable()
     var containerUrl:String!
@@ -139,7 +177,7 @@ class AppDelegate: NSResponder, NSApplicationDelegate, NSUserNotificationCenterD
             NSApplication.shared.isAutomaticCustomizeTouchBarMenuItemEnabled = true
         }
         
-        let appGroupName = "C5E42VUKXW.\(baseAppBundleId)"
+        let appGroupName = "WDEGJM2L33.\(baseAppBundleId)"
         guard let containerUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupName) else {
             return
         }
@@ -269,6 +307,9 @@ class AppDelegate: NSResponder, NSApplicationDelegate, NSUserNotificationCenterD
             LSSetDefaultHandlerForURLScheme("tg" as CFString, bundleId as CFString)
         }
         
+        NotificationCenter.default.addObserver(self, selector: #selector(brokenConnection(_:)), name: .brokenConnection, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(serverError(_:)), name: .serverError, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(invalidToken(_:)), name: .invalidToken, object: nil)
         
         launchInterface()
         
