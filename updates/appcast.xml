@@ -16,5 +16,20 @@
       <sparkle:minimumSystemVersion>10.11</sparkle:minimumSystemVersion>
       <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.31/circles-v0.0.31.zip" sparkle:version="181253" sparkle:shortVersionString="v0.0.31" length="39898614" type="application/octet-stream" sparkle:edSignature="NbFS8bcCSlkHjLrrrBUzhHJwfJmII1gEeyfJQCJoySTMWYG0zJWKXTGsaxIIH8fuJDyfif1U/+oz/QuigRSJBw=="/>
     </item>
+    <item>
+      <description>&lt;ul&gt;
+  &lt;li&gt;rebase on overtake/TelegramSwift&lt;/li&gt;
+  &lt;li&gt;circles inclusions fix&lt;/li&gt;
+  &lt;li&gt;badging fix&lt;/li&gt;
+  &lt;li&gt;persistent navigation state&lt;/li&gt;
+&lt;/ul&gt;</description>
+      <title>v0.0.32</title>
+      <pubDate>Mon, 17 Feb 2020 20:23:32 +0300</pubDate>
+      <sparkle:minimumSystemVersion>10.11</sparkle:minimumSystemVersion>
+      <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.32/circles-v0.0.32.zip" sparkle:version="181339" sparkle:shortVersionString="v0.0.32" length="44651014" type="application/octet-stream" sparkle:edSignature="jmj9sf1NIA6SsnnvCyD5ul3K9PrRDzuSINJX3czi92J5ZNPoLhYlVis5UcpokDyB/1uAsitAaCbrVG04qBgOCg=="/>
+      <sparkle:deltas>
+        <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.32/Circles.for.Telegram181339-181253.delta" sparkle:version="181339" sparkle:shortVersionString="v0.0.32" sparkle:deltaFrom="181253" length="25638241" type="application/octet-stream" sparkle:edSignature="Z2Dqxfpo/0inpduSBux/hzcp/P22HfKtUyWR9EfjWi2GlI2S3gGlx+oLa82C0doPqEwFKsmKdBkofKxyuEmEBQ=="/>
+      </sparkle:deltas>
+    </item>
   </channel>
 </rss>
