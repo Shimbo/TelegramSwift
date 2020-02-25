@@ -56,7 +56,7 @@ enum CirclesTableEntry : TableItemListNodeEntry {
     func item(_ arguments: CirclesArguments, initialSize: NSSize) -> TableRowItem {
         switch self {
         case .sectionId:
-            return GeneralRowItem(initialSize, height: 0, stableId: stableId)
+            return GeneralRowItem(initialSize, height: 0, stableId: stableId, backgroundColor: theme.colors.grayBackground)
         case let .group(groupId, title, unread):
             return CirclesRowItem(initialSize, stableId: stableId, groupId: groupId, title: title, unread: Int(unread))
             
@@ -322,6 +322,15 @@ class CirclesListView: View {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    public override var backgroundColor: NSColor {
+        set {
+            super.backgroundColor = theme.colors.grayBackground
+        }
+        get {
+            return theme.colors.grayBackground
+        }
+    }
 }
 
 fileprivate func prepareTransition(left:[AppearanceWrapperEntry<CirclesTableEntry>], right: [AppearanceWrapperEntry<CirclesTableEntry>], initialSize:NSSize, arguments: CirclesArguments) -> TableUpdateTransition {
@@ -341,9 +350,6 @@ class CirclesController: TelegramGenericViewController<CirclesListView>, TableVi
         self.chatListNavigationController = chatListNavigationController
         self.tabController = tabController
         super.init(context)
-        
-        backgroundColor = theme.colors.grayBackground
-
     }
     
     func select(groupId:PeerGroupId?) {
