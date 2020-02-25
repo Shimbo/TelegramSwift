@@ -490,7 +490,7 @@ private enum AccountInfoEntry : TableItemListNodeEntry {
             return GeneralInteractedRowItem(
                 initialSize,
                 stableId: stableId,
-                name: "Circles",
+                name: "Telefrost",
                 icon: #imageLiteral(resourceName: "Icon_Circles").precomposed(flipVertical: true),
                 activeIcon: #imageLiteral(resourceName: "Icon_Circles").precomposed(flipVertical: true),
                 type: .next,

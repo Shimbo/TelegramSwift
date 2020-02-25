@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "favicon-32.png",
+      "filename" : "favicon-24.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "favicon-64.png",
+      "filename" : "favicon-48.png",
       "scale" : "2x"
     },
     {
