@@ -310,6 +310,15 @@ class CirclesListView: View {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    public override var backgroundColor: NSColor {
+        set {
+            super.backgroundColor = theme.colors.grayBackground
+        }
+        get {
+            return theme.colors.grayBackground
+        }
+    }
 }
 
 fileprivate func prepareTransition(left:[AppearanceWrapperEntry<CirclesTableEntry>], right: [AppearanceWrapperEntry<CirclesTableEntry>], initialSize:NSSize, arguments: CirclesArguments) -> TableUpdateTransition {
@@ -331,9 +340,6 @@ class CirclesController: TelegramGenericViewController<CirclesListView>, TableVi
         self.tabController = tabController
         self.settings = settings
         super.init(context)
-        
-        backgroundColor = theme.colors.grayBackground
-
     }
     
     func resetCircleLastPeer() {

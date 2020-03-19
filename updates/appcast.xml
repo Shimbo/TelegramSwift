@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="yes"?>
 <rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
   <channel>
-    <title>Circles for Telegram</title>
+    <title>Telefrost</title>
     <item>
       <description>&lt;ul&gt;
 &lt;li&gt;Codesigned release&lt;/li&gt;
@@ -18,17 +18,19 @@
     </item>
     <item>
       <description>&lt;ul&gt;
-  &lt;li&gt;rebase on overtake/TelegramSwift&lt;/li&gt;
-  &lt;li&gt;circles inclusions fix&lt;/li&gt;
-  &lt;li&gt;badging fix&lt;/li&gt;
-  &lt;li&gt;persistent navigation state&lt;/li&gt;
+&lt;li&gt;Updater fix&lt;/li&gt;
+&lt;li&gt;Circles list background fix&lt;/li&gt;
+&lt;li&gt;Changed name and icon in settings view&lt;/li&gt;
+&lt;li&gt;Changed bot usernames&lt;/li&gt;
 &lt;/ul&gt;</description>
-      <title>v0.0.32</title>
-      <pubDate>Mon, 17 Feb 2020 20:23:32 +0300</pubDate>
+      <title>v0.0.34</title>
+      <pubDate>Wed, 26 Feb 2020 04:04:16 +0300</pubDate>
       <sparkle:minimumSystemVersion>10.11</sparkle:minimumSystemVersion>
-      <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.32/circles-v0.0.32.zip" sparkle:version="181339" sparkle:shortVersionString="v0.0.32" length="44651014" type="application/octet-stream" sparkle:edSignature="jmj9sf1NIA6SsnnvCyD5ul3K9PrRDzuSINJX3czi92J5ZNPoLhYlVis5UcpokDyB/1uAsitAaCbrVG04qBgOCg=="/>
+      <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.34/circles-v0.0.34.zip" sparkle:version="281343" sparkle:shortVersionString="v0.0.34" length="45914340" type="application/octet-stream" sparkle:edSignature="leIzyQMhqj9/BMIYHH7/cJkxR4nTPW5U+zuHZgG0cjog2pNn06eB3LpD4l/LXEDyHHOGWGL18Q2cNDfF9PxxAg=="/>
       <sparkle:deltas>
-        <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.32/Circles.for.Telegram181339-181253.delta" sparkle:version="181339" sparkle:shortVersionString="v0.0.32" sparkle:deltaFrom="181253" length="25638241" type="application/octet-stream" sparkle:edSignature="Z2Dqxfpo/0inpduSBux/hzcp/P22HfKtUyWR9EfjWi2GlI2S3gGlx+oLa82C0doPqEwFKsmKdBkofKxyuEmEBQ=="/>
+        <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.34/Telefrost281343-181342.delta" sparkle:version="281343" sparkle:shortVersionString="v0.0.34" sparkle:deltaFrom="181342" length="1610471" type="application/octet-stream" sparkle:edSignature="tvd9HjlK+UJdbUdu0avRF+letyz6+drE3cf5d28F451an0T9nV5WRqNKlJQmAo1gpbL13HkPp3lkgq7vLeVZDQ=="/>
+        <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.34/Telefrost281343-181339.delta" sparkle:version="281343" sparkle:shortVersionString="v0.0.34" sparkle:deltaFrom="181339" length="18586335" type="application/octet-stream" sparkle:edSignature="xyj0oRaCNBkax4YH6G/H4KQS4ETiYNmhkFocRTfzr205rv0Qk4hCSOamTdWxTvJOwPUak3WQ5pH/op7qEHMKBQ=="/>
+        <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.34/Telefrost281343-181253.delta" sparkle:version="281343" sparkle:shortVersionString="v0.0.34" sparkle:deltaFrom="181253" length="34629970" type="application/octet-stream" sparkle:edSignature="fa5U9Oh5KllFxCw9DodAij4TRffrUihyei2Qn6DBrWd1CKviVLpJdOv261aIKy2h8ZzVLOBtPrZBJxNkhL31DQ=="/>
       </sparkle:deltas>
     </item>
   </channel>
