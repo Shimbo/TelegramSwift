@@ -36,7 +36,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>281344</string>
+	<string>281346</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.social-networking</string>
 	<key>LSFileQuarantineEnabled</key>
@@ -65,7 +65,7 @@
 	<key>SUPublicDSAKeyFile</key>
 	<string>VshxSqMMRC72uUfMQSIGE6fyrXEvdYeBznTzuHRN5d8=</string>
 	<key>SUPublicEDKey</key>
-	<string>VshxSqMMRC72uUfMQSIGE6fyrXEvdYeBznTzuHRN5d8=</string>
+	<string>RjMGrohf48zOpmCt98ZNbKX56f5UuxMaQ49zKFV5790=</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>SFCompactRounded-Semibold.otf</string>

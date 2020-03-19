@@ -681,6 +681,7 @@ func NewCircleModalController(_ context: AccountContext) -> InputDataModalContro
         }, returnKeyInvocation: { identifier, event in
             let signal:Signal<Void, NoError> = Circles.getSettings(postbox: context.account.postbox) |> mapToSignal { settings in
                 if let botId = settings.botPeerId, name != "" {
+                    defer { name = "" }
                     return standaloneSendMessage(account: context.account, peerId: botId, text: "/create "+name, attributes: [], media: nil, replyToMessageId: nil) |> `catch` {_ in return .complete()} |> map {_ in return Void()}
                 } else {
                     return .single(Void())
