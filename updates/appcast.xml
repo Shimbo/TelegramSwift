@@ -33,5 +33,13 @@
         <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.34/Telefrost281343-181253.delta" sparkle:version="281343" sparkle:shortVersionString="v0.0.34" sparkle:deltaFrom="181253" length="34629970" type="application/octet-stream" sparkle:edSignature="fa5U9Oh5KllFxCw9DodAij4TRffrUihyei2Qn6DBrWd1CKviVLpJdOv261aIKy2h8ZzVLOBtPrZBJxNkhL31DQ=="/>
       </sparkle:deltas>
     </item>
+    <item>
+      <description>&lt;h3&gt;Release Notes:&lt;/h3&gt;
+- Fix duplicate workspace</description>
+      <title>v0.0.35</title>
+      <pubDate>&#x447;&#x442;, 19 &#x43C;&#x430;&#x440;&#x442;&#x430; 2020 16:20:13 +0300</pubDate>
+      <sparkle:minimumSystemVersion>10.11</sparkle:minimumSystemVersion>
+      <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.35/circles-v0.0.35.zip" sparkle:version="281346" sparkle:shortVersionString="v0.0.35" length="45919875" type="application/octet-stream" sparkle:edSignature="9qXey9gjolTq2FtDzh9dNXwfcwvJF4K8elqcpOWL0F0lFRLa3jzasHln541EJSrhhyXTOX1NLHoZJES1BrFQBQ=="/>
+    </item>
   </channel>
 </rss>

@@ -478,6 +478,9 @@ class CirclesController: TelegramGenericViewController<CirclesListView>, TableVi
         let arguments = CirclesArguments(context: context)
         
         let initialTransition: Signal<Void, NoError> = appearanceSignal |> map { appearance in
+            if self.didSetReady {
+                return
+            }
             var entries: [CirclesTableEntry] = []
             entries.append(.sectionId)
             entries.append(.group(
@@ -501,9 +504,9 @@ class CirclesController: TelegramGenericViewController<CirclesListView>, TableVi
 
             let mappedEntries = entries.map({AppearanceWrapperEntry(entry: $0, appearance: appearance)})
             previous = Atomic(value: mappedEntries)
-            var initial:Atomic<[AppearanceWrapperEntry<CirclesTableEntry>]> = Atomic(value: [])
+            let initial:Atomic<[AppearanceWrapperEntry<CirclesTableEntry>]> = Atomic(value: [])
             
-            var transition = prepareTransition(
+            let transition = prepareTransition(
                 left: initial.swap(mappedEntries),
                 right: mappedEntries,
                 initialSize: initialSize.modify({$0}),
