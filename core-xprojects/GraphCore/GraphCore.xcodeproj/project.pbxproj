@@ -14,7 +14,7 @@
 		D0A9B736241CEFAC007DF938 /* PecentChartRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A9B6FC241CEFAC007DF938 /* PecentChartRenderer.swift */; };
 		D0A9B737241CEFAC007DF938 /* PerformanceRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A9B6FD241CEFAC007DF938 /* PerformanceRenderer.swift */; };
 		D0A9B738241CEFAC007DF938 /* VerticalLinesRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A9B6FE241CEFAC007DF938 /* VerticalLinesRenderer.swift */; };
-		D0A9B739241CEFAC007DF938 /* LineBulletsRenerer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A9B6FF241CEFAC007DF938 /* LineBulletsRenerer.swift */; };
+		D0A9B739241CEFAC007DF938 /* LineBulletsRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A9B6FF241CEFAC007DF938 /* LineBulletsRenderer.swift */; };
 		D0A9B73A241CEFAC007DF938 /* VerticalScalesRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A9B700241CEFAC007DF938 /* VerticalScalesRenderer.swift */; };
 		D0A9B73B241CEFAC007DF938 /* BaseChartRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A9B701241CEFAC007DF938 /* BaseChartRenderer.swift */; };
 		D0A9B73C241CEFAC007DF938 /* PieChartRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A9B702241CEFAC007DF938 /* PieChartRenderer.swift */; };
@@ -64,14 +64,14 @@
 		A7831B152403BFE30056AEAC /* TGUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TGUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A789E0C223E841B600AEB34A /* GraphCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A789E0C623E841B600AEB34A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A79A559C2428D1D500EEFA4F /* TwoAxisStepBarsChartController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwoAxisStepBarsChartController.swift; path = "../../../../../../../../../../../builds/jAXw2Tf8/0/overtake/telegrammacos/submodules/telegram-ios/submodules/GraphCore/Sources/Charts/Controllers/Stacked Bars/TwoAxisStepBarsChartController.swift"; sourceTree = "<group>"; };
+		A79A559C2428D1D500EEFA4F /* TwoAxisStepBarsChartController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoAxisStepBarsChartController.swift; sourceTree = "<group>"; };
 		D0A9B6F9241CEFAC007DF938 /* HorizontalScalesRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalScalesRenderer.swift; sourceTree = "<group>"; };
 		D0A9B6FA241CEFAC007DF938 /* BarChartRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChartRenderer.swift; sourceTree = "<group>"; };
 		D0A9B6FB241CEFAC007DF938 /* LinesChartRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinesChartRenderer.swift; sourceTree = "<group>"; };
 		D0A9B6FC241CEFAC007DF938 /* PecentChartRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PecentChartRenderer.swift; sourceTree = "<group>"; };
 		D0A9B6FD241CEFAC007DF938 /* PerformanceRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerformanceRenderer.swift; sourceTree = "<group>"; };
 		D0A9B6FE241CEFAC007DF938 /* VerticalLinesRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalLinesRenderer.swift; sourceTree = "<group>"; };
-		D0A9B6FF241CEFAC007DF938 /* LineBulletsRenerer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineBulletsRenerer.swift; sourceTree = "<group>"; };
+		D0A9B6FF241CEFAC007DF938 /* LineBulletsRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineBulletsRenderer.swift; sourceTree = "<group>"; };
 		D0A9B700241CEFAC007DF938 /* VerticalScalesRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalScalesRenderer.swift; sourceTree = "<group>"; };
 		D0A9B701241CEFAC007DF938 /* BaseChartRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseChartRenderer.swift; sourceTree = "<group>"; };
 		D0A9B702241CEFAC007DF938 /* PieChartRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChartRenderer.swift; sourceTree = "<group>"; };
@@ -194,7 +194,7 @@
 				D0A9B6FC241CEFAC007DF938 /* PecentChartRenderer.swift */,
 				D0A9B6FD241CEFAC007DF938 /* PerformanceRenderer.swift */,
 				D0A9B6FE241CEFAC007DF938 /* VerticalLinesRenderer.swift */,
-				D0A9B6FF241CEFAC007DF938 /* LineBulletsRenerer.swift */,
+				D0A9B6FF241CEFAC007DF938 /* LineBulletsRenderer.swift */,
 				D0A9B700241CEFAC007DF938 /* VerticalScalesRenderer.swift */,
 				D0A9B701241CEFAC007DF938 /* BaseChartRenderer.swift */,
 				D0A9B702241CEFAC007DF938 /* PieChartRenderer.swift */,
@@ -408,7 +408,7 @@
 				D0A9B75A241CEFAC007DF938 /* CGPoint+Extensions.swift in Sources */,
 				D0A9B74B241CEFAC007DF938 /* TwoAxisLinesChartController.swift in Sources */,
 				D0A9B733241CEFAC007DF938 /* HorizontalScalesRenderer.swift in Sources */,
-				D0A9B739241CEFAC007DF938 /* LineBulletsRenerer.swift in Sources */,
+				D0A9B739241CEFAC007DF938 /* LineBulletsRenderer.swift in Sources */,
 				D0A9B762241CEFAC007DF938 /* ChartsDataManager.swift in Sources */,
 				D0A9B74F241CEFAC007DF938 /* LinesSelectionLabel.swift in Sources */,
 				D0A9B734241CEFAC007DF938 /* BarChartRenderer.swift in Sources */,
@@ -497,11 +497,11 @@
 		A7393CBA2406859300CE44CA /* DebugHockeyapp */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 6N38VWS5BX;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
@@ -590,11 +590,11 @@
 		A7393CBD2406859800CE44CA /* HockeyappMacAlpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 6N38VWS5BX;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
@@ -676,11 +676,11 @@
 		A7393CC0240685A600CE44CA /* ReleaseAppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 6N38VWS5BX;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
@@ -824,11 +824,11 @@
 		A789E0CB23E841B600AEB34A /* DebugAppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 6N38VWS5BX;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
@@ -851,11 +851,11 @@
 		A789E0CC23E841B600AEB34A /* ReleaseHockeyapp */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 6N38VWS5BX;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;

@@ -78,46 +78,7 @@ public class ChartStackSection: View, ChartThemeContainer {
         fatalError("init(frame:) has not been implemented")
     }
     
-    public func apply(theme: ChartTheme, animated: Bool) {
-        View.perform(animated: animated && self.isVisibleInWindow) {
-            self.backgroundColor = theme.tableBackgroundColor
-            
-            self.sectionContainerView.backgroundColor = theme.chartBackgroundColor
-            self.rangeView.backgroundColor = theme.chartBackgroundColor
-            self.visibilityView.backgroundColor = theme.chartBackgroundColor
-         //  self.backButton.tintColor = theme.actionButtonColor
-            self.backButton.set(color: theme.actionButtonColor, for: .Normal)
-            
-            self.backButton.set(text: "Zoom Out", for: .Normal)
-            _ = self.backButton.sizeToFit()
-            
-            for separator in self.separators {
-                separator.backgroundColor = theme.tableSeparatorColor
-            }
-        }
-        
-        if rangeView.isVisibleInWindow || chartView.isVisibleInWindow {
-            chartView.loadDetailsViewIfNeeded()
-            chartView.apply(theme: theme, animated: animated && chartView.isVisibleInWindow)
-            controller.apply(theme: theme, animated: animated)
-            rangeView.apply(theme: theme, animated: animated && rangeView.isVisibleInWindow)
-        } else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + TimeInterval.random(in: 0...0.1)) {
-                self.chartView.loadDetailsViewIfNeeded()
-                self.controller.apply(theme: theme, animated: false)
-                self.chartView.apply(theme: theme, animated: false)
-                self.rangeView.apply(theme: theme, animated: false)
-            }
-          
-        }
-        
-        self.titleLabel.setTextColor(theme.chartTitleColor, animated: animated && titleLabel.isVisibleInWindow)
-        self.headerLabel.setTextColor(theme.chartTitleColor, animated: animated && headerLabel.isVisibleInWindow)
-        
-        needsLayout = true
-    }
-    
-     func didTapBackButton() {
+    func didTapBackButton() {
         controller.didTapZoomOut()
     }
     
@@ -173,9 +134,6 @@ public class ChartStackSection: View, ChartThemeContainer {
         }
         controller.chartFrame = { [unowned self] in
             return self.chartView.chartFrame
-        }
-        controller.setDetailsViewModel = { [unowned self] viewModel, animated in
-            self.chartView.setDetailsViewModel(viewModel: viewModel, animated: animated)
         }
         controller.setDetailsChartVisibleClosure = { [unowned self] visible, animated in
             self.chartView.setDetailsChartVisible(visible, animated: animated)

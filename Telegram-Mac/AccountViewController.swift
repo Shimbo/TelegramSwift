@@ -138,6 +138,7 @@ private enum AccountInfoEntry : TableItemListNodeEntry {
     case about(index: Int)
     case faq(index: Int)
     case ask(index: Int)
+    case circles(index: Int)
     case whiteSpace(index:Int, height:CGFloat)
     
     var stableId: AccountInfoEntryId {
@@ -180,6 +181,8 @@ private enum AccountInfoEntry : TableItemListNodeEntry {
             return .index(16)
         case .ask:
             return .index(17)
+        case .circles:
+            return .index(314)
         case let .whiteSpace(index, _):
             return .index(1000 + index)
         }
@@ -224,6 +227,8 @@ private enum AccountInfoEntry : TableItemListNodeEntry {
         case let .ask(index):
             return index
         case let .update(index, _):
+            return index
+        case let .circles(index):
             return index
         case let .whiteSpace(index, _):
             return index
@@ -343,6 +348,12 @@ private enum AccountInfoEntry : TableItemListNodeEntry {
             }
         case let .filters(lhsIndex):
             if case let .filters(rhsIndex) = rhs {
+                return lhsIndex == rhsIndex
+            } else {
+                return false
+            }
+        case let .circles(lhsIndex):
+            if case let .circles(rhsIndex) = rhs {
                 return lhsIndex == rhsIndex
             } else {
                 return false
@@ -486,6 +497,16 @@ private enum AccountInfoEntry : TableItemListNodeEntry {
                 
                 
             }, border:[BorderType.Right], inset:NSEdgeInsets(left:16))
+        case .circles:
+            return GeneralInteractedRowItem(
+                initialSize,
+                stableId: stableId,
+                name: "Telefrost",
+                icon: #imageLiteral(resourceName: "Icon_Circles").precomposed(flipVertical: true),
+                activeIcon: #imageLiteral(resourceName: "Icon_Circles").precomposed(flipVertical: true),
+                type: .next,
+                action: { arguments.presentController(CirclesSettingsController(arguments.context), true) },
+                border:[BorderType.Right], inset:NSEdgeInsets(left:16))
         case .ask:
             return GeneralInteractedRowItem(initialSize, stableId: stableId, name: L10n.accountSettingsAskQuestion, icon: theme.icons.settingsAskQuestion, activeIcon: theme.icons.settingsAskQuestionActive, type: .next, action: {
                 confirm(for: mainWindow, information: L10n.accountConfirmAskQuestion, thridTitle: L10n.accountConfirmGoToFaq, successHandler: {  result in
@@ -626,6 +647,9 @@ private func accountInfoEntries(peerView:PeerView, accounts: [AccountWithInfo], 
     entries.append(.ask(index: index))
     index += 1
     
+    entries.append(.circles(index: index))
+    index += 1
+
     entries.append(.whiteSpace(index: index, height: 20))
     index += 1
     
@@ -907,6 +931,10 @@ class LayoutAccountController : TableViewController {
                     }
                 case controller.identifier == "app_appearance":
                     if let item = genericView.item(stableId: AnyHashable(AccountInfoEntryId.index(11))) {
+                        _ = genericView.select(item: item)
+                    }
+                case controller.identifier == "circles-settings":
+                    if let item = genericView.item(stableId: AnyHashable(AccountInfoEntryId.index(314))) {
                         _ = genericView.select(item: item)
                     }
 //                case controller.identifier == "wallet-info" || controller.identifier == "wallet-create" || controller.identifier == "wallet-splash":

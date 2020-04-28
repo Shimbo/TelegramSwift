@@ -1,16 +1,16 @@
 final class ApiEnvironment {
     static var apiId:Int32 {
-        return 9
+        return 1041243
     }
     static var apiHash:String {
-        return "3975f648bb682ee889f35483bc618d1c"
+        return "a22e951ebb6655d6d80ff04ada0306de"
     }
     
     static var bundleId: String {
-        return "ru.keepcoder.Telegram"
+        return "com.circlescollective.circlesfortelegram"
     }
     static var teamId: String {
-        return "6N38VWS5BX"
+        return "WDEGJM2L33"
     }
     
     static var group: String {

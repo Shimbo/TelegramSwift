@@ -153,7 +153,8 @@ enum UIChatListEntry : Identifiable, Comparable {
 
 
 
-fileprivate func prepareEntries(from:[AppearanceWrapperEntry<UIChatListEntry>]?, to:[AppearanceWrapperEntry<UIChatListEntry>], adIndex: UInt16?, context: AccountContext, initialSize:NSSize, animated:Bool, scrollState:TableScrollState? = nil, groupId: PeerGroupId, setupFilter: @escaping(ChatListFilter?)->Void, openFilterSettings: @escaping(ChatListFilter?)->Void, tabsMenuItems: @escaping(ChatListFilter?)->[ContextMenuItem]) -> Signal<TableUpdateTransition, NoError> {
+fileprivate func prepareEntries(from:[AppearanceWrapperEntry<UIChatListEntry>]?, to:[AppearanceWrapperEntry<UIChatListEntry>], adIndex: UInt16?, context: AccountContext, initialSize:NSSize, animated:Bool, scrollState:TableScrollState? = nil, groupId: PeerGroupId, circlesSettings: Circles, setupFilter: @escaping(ChatListFilter?)->Void, openFilterSettings: @escaping(ChatListFilter?)->Void, tabsMenuItems: @escaping(ChatListFilter?)->[ContextMenuItem]) -> Signal<TableUpdateTransition, NoError> {
+    
     
     return Signal { subscriber in
         
@@ -172,8 +173,20 @@ fileprivate func prepareEntries(from:[AppearanceWrapperEntry<UIChatListEntry>]?,
                     } else if index.pinningIndex == nil {
                         pinnedType = .none
                     }
-                    
-                    return ChatListRowItem(initialSize, context: context, message: message, index: inner.index, readState: readState, isMuted: isMuted, embeddedState: embeddedState, pinnedType: pinnedType, renderedPeer: renderedPeer, peerPresence: peerPresence, summaryInfo: summaryInfo, activities: activities, associatedGroupId: groupId, hasFailed: hasFailed, filter: filter)
+                    var gId = groupId
+                    if let inclusion = circlesSettings.inclusions[renderedPeer.peerId], gId != inclusion {
+                        (context.account.postbox.transaction { transaction in
+                            transaction.updatePeerChatListInclusion(
+                                renderedPeer.peerId,
+                                inclusion: .ifHasMessagesOrOneOf(
+                                    groupId: inclusion,
+                                    pinningIndex: nil,
+                                    minTimestamp: nil
+                                )
+                            )
+                            }).start()
+                    }
+                    return ChatListRowItem(initialSize, context: context, message: message, index: inner.index, readState: readState, isMuted: isMuted, embeddedState: embeddedState, pinnedType: pinnedType, renderedPeer: renderedPeer, peerPresence: peerPresence, summaryInfo: summaryInfo, activities: activities, associatedGroupId: circlesSettings.inclusions[renderedPeer.peerId] ?? groupId, hasFailed: hasFailed, filter: filter)
                 }
             case let .group(_, groupId, peers, message, unreadState, unreadCountDisplayCategory, animated, archiveStatus):
                 return ChatListRowItem(initialSize, context: context, pinnedType: .none, groupId: groupId, peers: peers, message: message, unreadState: unreadState, unreadCountDisplayCategory: unreadCountDisplayCategory, animateGroup: animated, archiveStatus: archiveStatus)
@@ -443,7 +456,11 @@ class ChatListController : PeersListController {
             var removeNextAnimation: Bool = false
             switch location {
             case let .Initial(count, st):
-                signal = context.account.viewTracker.tailChatListView(groupId: groupId, filterPredicate: chatListFilterPredicate(for: data.filter), count: count)
+                var countModified = count
+                if groupId != .root && groupId != Namespaces.PeerGroup.archive {
+                    countModified = Int(Int32.max)
+                }
+                signal = context.account.viewTracker.tailChatListView(groupId: groupId, filterPredicate: chatListFilterPredicate(for: data.filter), count: countModified)
                 scroll = st
             case let .Index(index, st):
                 signal = context.account.viewTracker.aroundChatListView(groupId: groupId, filterPredicate: chatListFilterPredicate(for: data.filter), index: index, count: 100)
@@ -469,7 +486,7 @@ class ChatListController : PeersListController {
         
         
 
-        let list:Signal<TableUpdateTransition,NoError> = combineLatest(queue: prepareQueue, chatHistoryView, appearanceSignal, statePromise.get(), context.chatUndoManager.allStatuses(), hiddenArchiveState.get(), appNotificationSettings(accountManager: context.sharedContext.accountManager), chatListFilterItems(account: context.account, accountManager: context.sharedContext.accountManager)) |> mapToQueue { value, appearance, state, undoStatuses, archiveIsHidden, inAppSettings, filtersCounter -> Signal<TableUpdateTransition, NoError> in
+        let list:Signal<TableUpdateTransition,NoError> = combineLatest(queue: prepareQueue, chatHistoryView, appearanceSignal, statePromise.get(), context.chatUndoManager.allStatuses(), hiddenArchiveState.get(), appNotificationSettings(accountManager: context.sharedContext.accountManager), Circles.settingsView(postbox: context.account.postbox), chatListFilterItems(account: context.account, accountManager: context.sharedContext.accountManager)) |> mapToQueue { value, appearance, state, undoStatuses, archiveIsHidden, inAppSettings, circlesSettings, filtersCounter -> Signal<TableUpdateTransition, NoError> in
                     
             var removeNextAnimation = value.2
             
@@ -569,7 +586,8 @@ class ChatListController : PeersListController {
                         }
                     }
                 case .group:
-                    return AppearanceWrapperEntry(entry: entry, appearance: appearance)
+                    //return AppearanceWrapperEntry(entry: entry, appearance: appearance)
+                    return nil
                 case .reveal:
                     return AppearanceWrapperEntry(entry: entry, appearance: appearance)
                 case .empty:
@@ -585,7 +603,7 @@ class ChatListController : PeersListController {
 //            if value.3 != previousfilter.data.swap(value.3) {
 //                animated = false
 //            }
-            return prepareEntries(from: prev, to: entries, adIndex: nil, context: context, initialSize: initialSize.with { $0 }, animated: animated, scrollState: scroll, groupId: groupId, setupFilter: setupFilter, openFilterSettings: openFilterSettings, tabsMenuItems: { filter in
+            return prepareEntries(from: prev, to: entries, adIndex: nil, context: context, initialSize: initialSize.with { $0 }, animated: animated, scrollState: scroll, groupId: groupId, circlesSettings: circlesSettings, setupFilter: setupFilter, openFilterSettings: openFilterSettings, tabsMenuItems: { filter in
                 
                 var items:[ContextMenuItem] = []
                 if var filter = filter {
@@ -1340,31 +1358,13 @@ class ChatListController : PeersListController {
     
     override var enableBack: Bool {
         switch mode {
-        case .folder, .filter:
+        case .filter:
             return true
         default:
             return false
         }
     }
     
-    override var defaultBarTitle: String {
-        switch mode {
-        case .plain:
-            return super.defaultBarTitle
-        case .folder:
-            return L10n.chatListArchivedChats
-        case .filter:
-            return _filterValue.with { $0.filter?.title ?? "Filter" }
-        }
-    }
-
-    override func escapeKeyAction() -> KeyHandlerResult {
-        if !mode.isPlain, let navigation = navigationController {
-            navigation.back()
-            return .invoked
-        }
-        return super.escapeKeyAction()
-    }
     
     
     init(_ context: AccountContext, modal:Bool = false, groupId: PeerGroupId? = nil, filterId: Int32? = nil) {
@@ -1376,7 +1376,7 @@ class ChatListController : PeersListController {
         } else if let groupId = groupId {
             mode = .folder(groupId)
         } else {
-            mode = .plain
+            mode = .folder(.root)
         }
         
         super.init(context, followGlobal: !modal, mode: mode)
@@ -1385,6 +1385,7 @@ class ChatListController : PeersListController {
             context.closeFolderFirst = true
         }
     }
+
 
     override func selectionWillChange(row:Int, item:TableRowItem, byClick: Bool) -> Bool {
         if let item = item as? ChatListRowItem, let peer = item.peer, let modalAction = context.sharedContext.bindings.rootNavigation().modalAction {
