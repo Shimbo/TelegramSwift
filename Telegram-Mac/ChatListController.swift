@@ -558,7 +558,6 @@ class ChatListController : PeersListController {
                 }
             }
             
-            
             if !value.3.tabs.isEmpty {
                 mapped.append(.reveal(value.3.tabs, value.3.filter, filtersCounter))
             }
@@ -711,10 +710,22 @@ class ChatListController : PeersListController {
         
         let filterView = chatListFilterPreferences(postbox: context.account.postbox) |> deliverOnMainQueue
         switch mode {
-        case .folder:
-            self.updateFilter( {
-                $0.withUpdatedTabs([]).withUpdatedFilter(nil)
-            } )
+        case .folder(.root):
+            filterDisposable.set(filterView.start(next: { [weak self] filters in
+                self?.updateFilter( { current in
+                    var current = current
+                    if let filter = current.filter {
+                        if let updated = filters.first(where: { $0.id == filter.id }) {
+                            current = current.withUpdatedFilter(updated)
+                        } else {
+                            current = current.withUpdatedFilter(nil)
+                        }
+                    }
+                    
+                    current = current.withUpdatedTabs(filters)
+                    return current
+                } )
+            }))
         case let .filter(filterId):
             filterDisposable.set(filterView.start(next: { [weak self] filters in
                 var shouldBack: Bool = false
@@ -734,21 +745,9 @@ class ChatListController : PeersListController {
                 }
             }))
         default:
-            filterDisposable.set(filterView.start(next: { [weak self] filters in
-                self?.updateFilter( { current in
-                    var current = current
-                    if let filter = current.filter {
-                        if let updated = filters.first(where: { $0.id == filter.id }) {
-                            current = current.withUpdatedFilter(updated)
-                        } else {
-                            current = current.withUpdatedFilter(nil)
-                        }
-                    }
-                    
-                    current = current.withUpdatedTabs(filters)
-                    return current
-                } )
-            }))
+            self.updateFilter( {
+                $0.withUpdatedTabs([]).withUpdatedFilter(nil)
+            } )
         }
     }
     
