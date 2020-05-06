@@ -113,10 +113,11 @@ func chatListFilterItems(account: Account, accountManager: AccountManager) -> Si
             }
             
             return combineLatest(queue: account.postbox.queue,
+                                 Circles.settingsView(postbox: account.postbox),
                                  account.postbox.combinedView(keys: keys),
                                  Signal<Bool, NoError>.single(true)
                 )
-                |> map { view, _ -> (Int, [(ChatListFilter, Int, Bool)]) in
+                |> map { circlesSettings, view, _ -> (Int, [(ChatListFilter, Int, Bool)]) in
                     guard let unreadCounts = view.views[unreadKey] as? UnreadMessageCountsView else {
                         return (0, [])
                     }
@@ -133,6 +134,9 @@ func chatListFilterItems(account: Account, accountManager: AccountManager) -> Si
                         case let .totalInGroup(groupId, state):
                             totalStates[groupId] = state
                         case let .peer(peerId, state):
+                            if circlesSettings.remoteInclusions[peerId] != nil {
+                                continue
+                            }
                             if let state = state, state.isUnread {
                                 if let peerView = view.views[.basicPeer(peerId)] as? BasicPeerView, let peer = peerView.peer {
                                     let tag = account.postbox.seedConfiguration.peerSummaryCounterTags(peer, peerView.isContact)
