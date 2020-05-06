@@ -71,6 +71,7 @@ private func circlesControllerEntries(settings: Circles,
         case .filtered:
             type = .filtered
     }
+    //type = .all
 
     func getUnread(_ groupId: PeerGroupId, type: PeerGroupUnreadCountersCombinedSummary.MuteCategory) -> Int32 {
         if let unread = unreadStates[groupId]?.count(countingCategory: unreadCountDisplayCategory == .chats ? .chats : .messages, mutedCategory: type) {
