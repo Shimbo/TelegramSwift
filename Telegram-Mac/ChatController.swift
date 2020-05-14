@@ -3591,14 +3591,14 @@ class ChatController: EditableViewController<ChatControllerView>, Notifable, Tab
                             
                             if let peer = peerViewMainPeer(peerView) {
                                 
-                                if let groupId = peerView.groupId, groupId != .root {
-                                    items.append(SPopoverItem(L10n.chatContextUnarchive, {
-                                        _ = updatePeerGroupIdInteractively(postbox: context.account.postbox, peerId: peerId, groupId: .root).start()
-                                    }, theme.icons.chatUnarchive))
-                                } else {
+                                if let groupId = peerView.groupId, groupId != PeerGroupId(rawValue: 1) {
                                     items.append(SPopoverItem(L10n.chatContextArchive, {
                                         _ = updatePeerGroupIdInteractively(postbox: context.account.postbox, peerId: peerId, groupId: Namespaces.PeerGroup.archive).start()
                                     }, theme.icons.chatArchive))
+                                } else {
+                                    items.append(SPopoverItem(L10n.chatContextUnarchive, {
+                                        _ = updatePeerGroupIdInteractively(postbox: context.account.postbox, peerId: peerId, groupId: .root).start()
+                                    }, theme.icons.chatUnarchive))
                                 }
                                 
                                 if peer.canSendMessage, !peer.isSecretChat {

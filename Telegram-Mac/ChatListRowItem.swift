@@ -648,23 +648,24 @@ class ChatListRowItem: TableRowItem {
     
     func toggleArchive() {
         if let peerId = peerId {
-            switch associatedGroupId {
-            case .root:
+            if associatedGroupId != PeerGroupId(rawValue: 1) {
                 let postbox = context.account.postbox
                 context.sharedContext.bindings.mainController().chatList.setAnimateGroupNextTransition(Namespaces.PeerGroup.archive)
-                 context.sharedContext.bindings.mainController().chatList.addUndoAction(ChatUndoAction(peerId: peerId, type: .archiveChat, action: { status in
+                _ = updatePeerGroupIdInteractively(postbox: postbox, peerId: peerId, groupId: Namespaces.PeerGroup.archive).start()
+                context.sharedContext.bindings.mainController().chatList.addUndoAction(ChatUndoAction(peerId: peerId, type: .archiveChat, action: { status in
                     switch status {
                     case .cancelled:
+                        _ = updatePeerGroupIdInteractively(postbox: postbox, peerId: peerId, groupId: .root).start()
                         break
-                        //_ = updatePeerGroupIdInteractively(postbox: postbox, peerId: peerId, groupId: .root).start()
                     case .success:
-                        _ = updatePeerGroupIdInteractively(postbox: postbox, peerId: peerId, groupId: Namespaces.PeerGroup.archive).start()
+                        //_ = updatePeerGroupIdInteractively(postbox: postbox, peerId: peerId, groupId: Namespaces.PeerGroup.archive).start()
+                        break
                     default:
                         break
                     }
-                 }))
-            default:
-                 _ = updatePeerGroupIdInteractively(postbox: context.account.postbox, peerId: peerId, groupId: .root).start()
+                }))
+            } else {
+                _ = updatePeerGroupIdInteractively(postbox: context.account.postbox, peerId: peerId, groupId: .root).start()
             }
         }
     }
@@ -777,8 +778,8 @@ class ChatListRowItem: TableRowItem {
                 items.append(ContextMenuItem(pinnedType == .none ? tr(L10n.chatListContextPin) : tr(L10n.chatListContextUnpin), handler: togglePin))
             }
             
-            if canArchive && associatedGroupId != Namespaces.PeerGroup.archive {
-                items.append(ContextMenuItem(L10n.chatListSwipingArchive, handler: toggleArchive))
+            if canArchive {
+                items.append(ContextMenuItem(associatedGroupId != Namespaces.PeerGroup.archive ? tr(L10n.chatContextArchive) : tr(L10n.chatContextUnarchive), handler: toggleArchive))
             }
             
             

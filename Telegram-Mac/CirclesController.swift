@@ -29,14 +29,14 @@ enum CirclesTableEntryStableId : Hashable {
 }
 
 enum CirclesTableEntry : TableItemListNodeEntry {
-    case group(groupId: PeerGroupId, title: String, unread: Int32)
+    case group(groupId: PeerGroupId, title: String, settingsURL: String?, unread: Int32)
     case sectionId
     
     var stableId:CirclesTableEntryStableId {
         switch self {
         case .sectionId:
             return .sectionId
-        case .group(let groupId, _, _):
+        case .group(let groupId, _, _, _):
             return .group(groupId)
         }
     }
@@ -45,8 +45,8 @@ enum CirclesTableEntry : TableItemListNodeEntry {
         switch self {
         case .sectionId:
             return GeneralRowItem(initialSize, height: 0, stableId: stableId, backgroundColor: theme.colors.grayBackground)
-        case let .group(groupId, title, unread):
-            return CirclesRowItem(initialSize, stableId: stableId, groupId: groupId, title: title, unread: Int(unread))
+        case let .group(groupId, title, settingsURL, unread):
+            return CirclesRowItem(initialSize, stableId: stableId, groupId: groupId, title: title, settingsURL: settingsURL, unread: Int(unread))
             
         }
     }
@@ -85,6 +85,7 @@ private func circlesControllerEntries(settings: Circles,
     entries.append(.group(
         groupId: .root,
         title: "Personal",
+        settingsURL: nil,
         unread: getUnread(.root, type: type)
     ))
     
@@ -93,15 +94,16 @@ private func circlesControllerEntries(settings: Circles,
             entries.append(.group(
                 groupId: key,
                 title: settings.groupNames[key]!,
+                settingsURL: settings.groupSettingsURLs[key],
                 unread: getUnread(key, type: type)
             ))
         }
     }
 
     
-    entries.append(.group(groupId: Namespaces.PeerGroup.archive, title: "Archived", unread: 0))
+    entries.append(.group(groupId: Namespaces.PeerGroup.archive, title: "Archived", settingsURL: nil, unread: 0))
     if settings.botPeerId != nil {
-        entries.append(.group(groupId: PeerGroupId(rawValue: 2), title: "New", unread: 0))
+        entries.append(.group(groupId: PeerGroupId(rawValue: 2), title: "New", settingsURL: nil, unread: 0))
     }
     return entries
 }
@@ -223,6 +225,7 @@ class CirclesRowItem: TableRowItem {
     public var title: TextViewLayout!
     public let groupId: PeerGroupId
     public let unread: Int
+    public let settingsURL: String?
     public var badgeNode:BadgeNode? = nil
     
     fileprivate let _stableId:AnyHashable
@@ -230,10 +233,11 @@ class CirclesRowItem: TableRowItem {
         return _stableId
     }
     
-    init(_ initialSize:NSSize, stableId: CirclesTableEntryStableId, groupId: PeerGroupId, title:String, unread: Int) {
+    init(_ initialSize:NSSize, stableId: CirclesTableEntryStableId, groupId: PeerGroupId, title:String, settingsURL:String?, unread: Int) {
         self.groupId = groupId
         self._stableId = stableId
         self.unread = unread
+        self.settingsURL = settingsURL
         
         super.init(initialSize)
         
@@ -279,7 +283,23 @@ class CirclesRowItem: TableRowItem {
         return 80
     }
     
+    override func menuItems(in location: NSPoint) -> Signal<[ContextMenuItem], NoError> {
+        if self.settingsURL == nil {
+            return .single([])
+        }
+        
+        let openSettings:()->Void = { [weak self] in
+           self?.openSettings()
+        }
+        
+        return .single([ContextMenuItem("Settings", handler: openSettings)])
+    }
     
+    func openSettings() {
+        if let settingsURL = self.settingsURL, let url = URL(string: settingsURL) {
+            NSWorkspace.shared.open(url)
+        }
+    }
 }
 
 class CirclesListView: View {
@@ -487,6 +507,7 @@ class CirclesController: TelegramGenericViewController<CirclesListView>, TableVi
             entries.append(.group(
                 groupId: .root,
                 title: "Personal",
+                settingsURL: nil,
                 unread: 0
             ))
             
@@ -494,13 +515,14 @@ class CirclesController: TelegramGenericViewController<CirclesListView>, TableVi
                 entries.append(.group(
                     groupId: key,
                     title: self.settings.groupNames[key]!,
+                    settingsURL: self.settings.groupSettingsURLs[key],
                     unread: 0
                 ))
             }
 
-            entries.append(.group(groupId: Namespaces.PeerGroup.archive, title: "Archived", unread: 0))
+            entries.append(.group(groupId: Namespaces.PeerGroup.archive, title: "Archived", settingsURL: nil, unread: 0))
             if self.settings.botPeerId != nil {
-                entries.append(.group(groupId: PeerGroupId(rawValue: 2), title: "New Circle", unread: 0))
+                entries.append(.group(groupId: PeerGroupId(rawValue: 2), title: "New Circle", settingsURL: nil, unread: 0))
             }
 
             let mappedEntries = entries.map({AppearanceWrapperEntry(entry: $0, appearance: appearance)})
