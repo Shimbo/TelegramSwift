@@ -173,8 +173,7 @@ fileprivate func prepareEntries(from:[AppearanceWrapperEntry<UIChatListEntry>]?,
                     } else if index.pinningIndex == nil {
                         pinnedType = .none
                     }
-                    var gId = groupId
-                    if let inclusion = circlesSettings.inclusions[renderedPeer.peerId], gId != inclusion {
+                    if let inclusion = circlesSettings.inclusions[renderedPeer.peerId], groupId != inclusion, groupId != PeerGroupId(rawValue: 1) {
                         (context.account.postbox.transaction { transaction in
                             transaction.updatePeerChatListInclusion(
                                 renderedPeer.peerId,
@@ -186,7 +185,8 @@ fileprivate func prepareEntries(from:[AppearanceWrapperEntry<UIChatListEntry>]?,
                             )
                             }).start()
                     }
-                    return ChatListRowItem(initialSize, context: context, message: message, index: inner.index, readState: readState, isMuted: isMuted, embeddedState: embeddedState, pinnedType: pinnedType, renderedPeer: renderedPeer, peerPresence: peerPresence, summaryInfo: summaryInfo, activities: activities, associatedGroupId: circlesSettings.inclusions[renderedPeer.peerId] ?? groupId, hasFailed: hasFailed, filter: filter)
+                    let associatedGroupId = groupId != PeerGroupId(rawValue: 1) ? circlesSettings.inclusions[renderedPeer.peerId] ?? groupId : groupId
+                    return ChatListRowItem(initialSize, context: context, message: message, index: inner.index, readState: readState, isMuted: isMuted, embeddedState: embeddedState, pinnedType: pinnedType, renderedPeer: renderedPeer, peerPresence: peerPresence, summaryInfo: summaryInfo, activities: activities, associatedGroupId: associatedGroupId, hasFailed: hasFailed, filter: filter)
                 }
             case let .group(_, groupId, peers, message, unreadState, unreadCountDisplayCategory, animated, archiveStatus):
                 return ChatListRowItem(initialSize, context: context, pinnedType: .none, groupId: groupId, peers: peers, message: message, unreadState: unreadState, unreadCountDisplayCategory: unreadCountDisplayCategory, animateGroup: animated, archiveStatus: archiveStatus)
