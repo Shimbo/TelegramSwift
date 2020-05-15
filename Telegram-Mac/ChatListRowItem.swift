@@ -799,10 +799,12 @@ class ChatListRowItem: TableRowItem {
                 if circlesSettings.groupNames.keys.sorted() == circlesSettings.index.keys.sorted() {
                     for id in circlesSettings.groupNames.keys.sorted(by: { circlesSettings.index[$0]! < circlesSettings.index[$1]! }) {
                         if id != associatedGroupId {
+                            let isLocked = ((circlesSettings.groupFlags[id] ?? 0) & Circles.lockedGroupFlagMask) != 0
                             items.append(
                                 ContextMenuItem(
-                                    circlesSettings.groupNames[id]!,
-                                    handler: { [weak self] in self?.addToCircle(id:id) }
+                                    (isLocked ? "🔒 " : "") + circlesSettings.groupNames[id]!,
+                                    handler: isLocked ? {} : { [weak self] in self?.addToCircle(id:id) },
+                                    enabled: !isLocked
                                 )
                             )
                         }
