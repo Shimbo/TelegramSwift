@@ -41,5 +41,17 @@
       <sparkle:minimumSystemVersion>10.11</sparkle:minimumSystemVersion>
       <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.35/circles-v0.0.35.zip" sparkle:version="281346" sparkle:shortVersionString="v0.0.35" length="45919875" type="application/octet-stream" sparkle:edSignature="9qXey9gjolTq2FtDzh9dNXwfcwvJF4K8elqcpOWL0F0lFRLa3jzasHln541EJSrhhyXTOX1NLHoZJES1BrFQBQ=="/>
     </item>
+    <item>
+      <description>&lt;h3&gt;Release Notes:&lt;/h3&gt;
+
+- merged Telegram folders and other recent changes</description>
+      <description>&lt;h3&gt;Release Notes:&lt;/h3&gt;
+
+- merged Telegram folders and other recent changes</description>
+      <title>v0.0.37</title>
+      <pubDate>Wed, 06 May 2020 18:12:34 +0300</pubDate>
+      <sparkle:minimumSystemVersion>10.11</sparkle:minimumSystemVersion>
+      <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.37/circles-v0.0.37.zip" sparkle:version="281437" sparkle:shortVersionString="v0.0.37" length="44383654" type="application/octet-stream" sparkle:edSignature="9wu0ZyoJnCfTomvkLQPmu7BlBHW8rGD5Jy4+08QIgHtI7oeGXSXpVR0I7rBSe9jSvBXVk12244bDxZFbQ08uCA=="/>
+    </item>
   </channel>
 </rss>

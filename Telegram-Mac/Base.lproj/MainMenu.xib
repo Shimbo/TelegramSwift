@@ -101,6 +101,11 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="WRV-NI-Exz"/>
+                            <menuItem title="Find" keyEquivalent="F" identifier="aMa-rb-kjV" id="aMa-rb-kjV" customClass="MMMenuItem" customModule="Telegram" customModuleProvider="target">
+                                <connections>
+                                    <action selector="globalSearch:" target="Voe-Tx-rLC" id="gES-AP-ls4"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Cut" keyEquivalent="x" identifier="uRl-iY-unG" id="uRl-iY-unG" customClass="MMMenuItem" customModule="Telegram" customModuleProvider="target">
                                 <connections>
                                     <action selector="cut:" target="-1" id="YJe-68-I9s"/>
