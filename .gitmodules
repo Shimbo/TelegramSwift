@@ -11,7 +11,7 @@
 [submodule "submodules/telegram-ios"]
 	path = submodules/telegram-ios
 	url = git@github.com:Shimbo/Telegram-iOS.git
-	branch = updated_master
+	branch = circles
 [submodule "submodules/rlottie"]
 	path = submodules/rlottie
 	url = git@github.com:overtake/rlottie.git
