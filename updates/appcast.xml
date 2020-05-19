@@ -53,5 +53,33 @@
       <sparkle:minimumSystemVersion>10.11</sparkle:minimumSystemVersion>
       <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.37/circles-v0.0.37.zip" sparkle:version="281437" sparkle:shortVersionString="v0.0.37" length="44383654" type="application/octet-stream" sparkle:edSignature="9wu0ZyoJnCfTomvkLQPmu7BlBHW8rGD5Jy4+08QIgHtI7oeGXSXpVR0I7rBSe9jSvBXVk12244bDxZFbQ08uCA=="/>
     </item>
+    <item>
+      <description>&lt;h3&gt;Release Notes:&lt;/h3&gt;
+- fixed archives
+- fixed badging
+- added workspace settings</description>
+      <title>v0.0.38</title>
+      <pubDate>Thu, 14 May 2020 19:00:12 +0300</pubDate>
+      <sparkle:minimumSystemVersion>10.11</sparkle:minimumSystemVersion>
+      <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.38/circles-v0.0.38.zip" sparkle:version="281540" sparkle:shortVersionString="v0.0.38" length="44389112" type="application/octet-stream" sparkle:edSignature="SLBvGi+mn3oKHCja4UsIiMzjFX9rrbne6SpjlLhtb9CtOSKYzZ/+0YcJCNxTbD0MvLJTwPTdYOZB9ZQW6EKyAw=="/>
+      <sparkle:deltas>
+        <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.38/Telefrost281540-281437.delta" sparkle:version="281540" sparkle:shortVersionString="v0.0.38" sparkle:deltaFrom="281437" length="2378819" type="application/octet-stream" sparkle:edSignature="903uZWj58PJihA52x0i2E8DEEqowIKkh8fIlW45GFEPPFQ06HYRW1YB6fbSd5x/w2drTSrU+soVXbKDAKZPJBA=="/>
+      </sparkle:deltas>
+    </item>
+    <item>
+      <description>&lt;h3&gt;Release Notes:&lt;/h3&gt;
+
+
+- added locked circles indication</description>
+      <title>v0.0.39</title>
+      <pubDate>Fri, 15 May 2020 16:17:02 +0300</pubDate>
+      <sparkle:minimumSystemVersion>10.11</sparkle:minimumSystemVersion>
+      <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.39/circles-v0.0.39.zip" sparkle:version="281550" sparkle:shortVersionString="v0.0.39" length="44394608" type="application/octet-stream" sparkle:edSignature="Mvd+hqGIakdXtJJ8EQZ4nx/sOz4YrL54gR2RiKkrgjcmVDrANb0yp0DB0ext2bOvSmM3SONF9ubG6U5qwdMWBg=="/>
+      <sparkle:deltas>
+        <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.39/Telefrost281550-281540.delta" sparkle:version="281550" sparkle:shortVersionString="v0.0.39" sparkle:deltaFrom="281540" length="2759489" type="application/octet-stream" sparkle:edSignature="BA08v5yFNSObfcRnf41DlPT+tO4fmXutMXm+1VSFbj4NAaGcZ1916phZyupE21bYLpMXB3KSYq5408JVDY0aDA=="/>
+        <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.39/Telefrost281550-281437.delta" sparkle:version="281550" sparkle:shortVersionString="v0.0.39" sparkle:deltaFrom="281437" length="3084864" type="application/octet-stream" sparkle:edSignature="16/7r9zz+ahid6oPFvYmGM4iGXFSaf5wp4pa4DPCm7vnoPXjmHJ78mfRwvK3ghFRfRGl6OoJJ3HQ0kc9KyoqCw=="/>
+        <enclosure url="https://github.com/Shimbo/TelegramSwift/releases/download/v0.0.39/Telefrost281550-281437.delta" sparkle:version="281550" sparkle:shortVersionString="v0.0.39" sparkle:deltaFrom="281437" length="3084864" type="application/octet-stream" sparkle:edSignature="16/7r9zz+ahid6oPFvYmGM4iGXFSaf5wp4pa4DPCm7vnoPXjmHJ78mfRwvK3ghFRfRGl6OoJJ3HQ0kc9KyoqCw=="/>
+      </sparkle:deltas>
+    </item>
   </channel>
 </rss>
