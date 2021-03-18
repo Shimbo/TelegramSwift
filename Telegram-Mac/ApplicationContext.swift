@@ -137,7 +137,7 @@ final class AuthorizedApplicationContext: NSObject, SplitViewDelegate {
     
     private var launchAction: ApplicationContextLaunchAction?
     
-    init(window: Window, context: AccountContext, launchSettings: LaunchSettings) {
+    init(window: Window, context: AccountContext, launchSettings: LaunchSettings, circlesSettings: Circles) {
         
         self.context = context
         emptyController = EmptyChatViewController(context)
@@ -174,8 +174,8 @@ final class AuthorizedApplicationContext: NSObject, SplitViewDelegate {
         
         window.rootViewController = rightController
         
-        leftController = MainViewController(context);
-
+        leftController = MainViewController(context, circlesSettings)
+        rightController.add(listener: WeakReference(value: leftController))
         
         leftController.navigationController = rightController
         
@@ -584,7 +584,7 @@ final class AuthorizedApplicationContext: NSObject, SplitViewDelegate {
     func splitViewDidNeedSwapToLayout(state: SplitViewState) {
         let previousState = splitView.state
         splitView.removeAllControllers();
-        let w:CGFloat = FastSettings.leftColumnWidth;
+        let w:CGFloat = 380;
         FastSettings.isMinimisize = false
         splitView.mustMinimisize = false
         switch state {
@@ -613,7 +613,7 @@ final class AuthorizedApplicationContext: NSObject, SplitViewDelegate {
         case .minimisize:
             splitView.mustMinimisize = true
             FastSettings.isMinimisize = true
-            splitView.addController(controller: leftController, proportion: SplitProportion(min:70, max:70))
+            splitView.addController(controller: leftController, proportion: SplitProportion(min:70+80, max:70+80))
             splitView.addController(controller: rightController, proportion: SplitProportion(min:380, max:CGFloat.greatestFiniteMagnitude))
         default:
             break;

@@ -33,7 +33,11 @@ class MMMenu : NSMenu {
             return super.title
         }
         set {
-            super.title = newValue
+            if newValue == "Telegram" {
+                super.title = "Telefrost"
+            } else {
+                super.title = newValue
+            }
         }
         
     }

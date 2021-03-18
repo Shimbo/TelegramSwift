@@ -193,9 +193,6 @@ class ChatListRowItem: TableRowItem {
     }
     
     var canArchive: Bool {
-        if groupId != .root {
-            return false
-        }
         if context.peerId == peerId {
             return false
         }
@@ -651,24 +648,36 @@ class ChatListRowItem: TableRowItem {
     
     func toggleArchive() {
         if let peerId = peerId {
-            switch associatedGroupId {
-            case .root:
+            if associatedGroupId != PeerGroupId(rawValue: 1) {
                 let postbox = context.account.postbox
                 context.sharedContext.bindings.mainController().chatList.setAnimateGroupNextTransition(Namespaces.PeerGroup.archive)
-                 context.sharedContext.bindings.mainController().chatList.addUndoAction(ChatUndoAction(peerId: peerId, type: .archiveChat, action: { status in
+                _ = updatePeerGroupIdInteractively(postbox: postbox, peerId: peerId, groupId: Namespaces.PeerGroup.archive).start()
+                context.sharedContext.bindings.mainController().chatList.addUndoAction(ChatUndoAction(peerId: peerId, type: .archiveChat, action: { status in
                     switch status {
                     case .cancelled:
+                        _ = updatePeerGroupIdInteractively(postbox: postbox, peerId: peerId, groupId: .root).start()
                         break
-                        //_ = updatePeerGroupIdInteractively(postbox: postbox, peerId: peerId, groupId: .root).start()
                     case .success:
-                        _ = updatePeerGroupIdInteractively(postbox: postbox, peerId: peerId, groupId: Namespaces.PeerGroup.archive).start()
+                        //_ = updatePeerGroupIdInteractively(postbox: postbox, peerId: peerId, groupId: Namespaces.PeerGroup.archive).start()
+                        break
                     default:
                         break
                     }
-                 }))
-            default:
-                 _ = updatePeerGroupIdInteractively(postbox: context.account.postbox, peerId: peerId, groupId: .root).start()
+                }))
+            } else {
+                _ = updatePeerGroupIdInteractively(postbox: context.account.postbox, peerId: peerId, groupId: .root).start()
             }
+        }
+    }
+    
+    func addToCircle(id: PeerGroupId) {
+        if let peerId = peerId {
+            _ = (updatePeerGroupIdInteractively(postbox: self.context.account.postbox, peerId: peerId, groupId: id)
+            |> mapToSignal {
+                return Circles.addToCircle(postbox: self.context.account.postbox, network: self.context.account.network, peerId: peerId, groupId: id, userId: self.context.account.peerId)
+            }).start()
+            context.sharedContext.bindings.mainController().chatList.setAnimateGroupNextTransition(id)
+            context.sharedContext.bindings.rootNavigation().gotoEmpty(true)
         }
     }
     
@@ -680,6 +689,14 @@ class ChatListRowItem: TableRowItem {
     }
     
     override func menuItems(in location: NSPoint) -> Signal<[ContextMenuItem], NoError> {
+        let strongSelf = self
+        return Circles.getSettings(postbox: self.context.account.postbox)
+        |> mapToSignal {settings -> Signal<[ContextMenuItem], NoError> in
+            return strongSelf.menuItemsOrig(in: location, circlesSettings: settings)
+        }
+    }
+    
+    func menuItemsOrig(in location: NSPoint, circlesSettings: Circles) -> Signal<[ContextMenuItem], NoError> {
         var items:[ContextMenuItem] = []
 
         let context = self.context
@@ -761,9 +778,41 @@ class ChatListRowItem: TableRowItem {
                 items.append(ContextMenuItem(pinnedType == .none ? tr(L10n.chatListContextPin) : tr(L10n.chatListContextUnpin), handler: togglePin))
             }
             
-            if groupId == .root, (canArchive || associatedGroupId != .root), filter == nil {
-                items.append(ContextMenuItem(associatedGroupId == .root ? L10n.chatListSwipingArchive : L10n.chatListSwipingUnarchive, handler: toggleArchive))
+            if canArchive {
+                items.append(ContextMenuItem(associatedGroupId != Namespaces.PeerGroup.archive ? tr(L10n.chatContextArchive) : tr(L10n.chatContextUnarchive), handler: toggleArchive))
             }
+            
+            
+            
+            if circlesSettings.groupNames.keys.count > 0 {
+                items.append(ContextSeparatorItem())
+                
+                if associatedGroupId != .root {
+                    items.append(
+                        ContextMenuItem(
+                            "Personal",
+                            handler: { [weak self] in self?.addToCircle(id: .root) }
+                        )
+                    )
+                }
+                
+                if circlesSettings.groupNames.keys.sorted() == circlesSettings.index.keys.sorted() {
+                    for id in circlesSettings.groupNames.keys.sorted(by: { circlesSettings.index[$0]! < circlesSettings.index[$1]! }) {
+                        if id != associatedGroupId {
+                            let isLocked = ((circlesSettings.groupFlags[id] ?? 0) & Circles.lockedGroupFlagMask) != 0
+                            items.append(
+                                ContextMenuItem(
+                                    (isLocked ? "🔒 " : "") + circlesSettings.groupNames[id]!,
+                                    handler: isLocked ? {} : { [weak self] in self?.addToCircle(id:id) },
+                                    enabled: !isLocked
+                                )
+                            )
+                        }
+                    }
+                    items.append(ContextSeparatorItem())
+                }
+            }
+        
             
             if context.peerId != peer.id, pinnedType != .ad {
                 items.append(ContextMenuItem(isMuted ? tr(L10n.chatListContextUnmute) : tr(L10n.chatListContextMute), handler: toggleMute))

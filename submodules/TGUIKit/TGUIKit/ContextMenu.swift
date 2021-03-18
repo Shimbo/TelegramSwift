@@ -27,15 +27,16 @@ public class ContextMenuItem : NSMenuItem {
     
     let handler:()->Void
     private let dynamicTitle:(()->String)?
-    public init(_ title:String, handler:@escaping()->Void = {}, image:NSImage? = nil, dynamicTitle:(()->String)? = nil, state: NSControl.StateValue? = nil) {
+    public init(_ title:String, handler:@escaping()->Void = {}, image:NSImage? = nil, dynamicTitle:(()->String)? = nil, state: NSControl.StateValue? = nil, enabled: Bool = true) {
         self.handler = handler
         self.dynamicTitle = dynamicTitle
         super.init(title: title, action: nil, keyEquivalent: "")
         
         self.title = title
+        self.attributedTitle = enabled ? nil : NSAttributedString(string: title, attributes: [NSAttributedString.Key.foregroundColor: NSColor.grayText])
         self.action = #selector(click)
         self.target = self
-        self.isEnabled = true
+        self.isEnabled = enabled
         self.image = image
         if let state = state {
             self.state = state

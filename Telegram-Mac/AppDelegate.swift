@@ -38,6 +38,13 @@ private final class SharedApplicationContext {
 }
 
 
+extension Notification.Name {
+    static let brokenConnection = Notification.Name("brokenConnection")
+    static let invalidToken = Notification.Name("invalidToken")
+    static let serverError = Notification.Name("serverError")
+}
+
+
 @NSApplicationMain
 class AppDelegate: NSResponder, NSApplicationDelegate, NSUserNotificationCenterDelegate, NSWindowDelegate {
    
@@ -50,16 +57,47 @@ class AppDelegate: NSResponder, NSApplicationDelegate, NSUserNotificationCenterD
         }
     }
     
+    @objc func serverError(_ notification:Notification) {
+        Queue.mainQueue().async {
+            alert(for: self.window, info: "Circles server errror")
+        }
+    }
+    @objc func invalidToken(_ notification:Notification) {
+        if self.tokenRequestRetries < 3 {
+            let signal = self.context.get() |> take(1) |> delay(1.0, queue: .mainQueue())
+            |> mapToSignal { context -> Signal<Void, NoError> in
+                if let context = context {
+                    self.tokenRequestRetries += 1
+                    return Circles.requestToken(postbox: context.context.account.postbox, account: context.context.account)
+                } else {
+                    return .single(Void())
+                }
+            } |> deliverOnMainQueue
+            _ = signal.start()
+        } else {
+            Queue.mainQueue().async {
+                alert(for: self.window, info: "Token requests retries exceeded")
+            }
+        }
+    }
+    @objc func brokenConnection(_ notification:Notification) {
+        Queue.mainQueue().async {
+            alert(for: self.window, info: "Can't connect Circles server")
+        }
+    }
+    
+    
     override init() {
         super.init()
         NSAppleEventManager.shared().setEventHandler(self, andSelector: #selector(handleURLEvent(_: with:)), forEventClass: AEEventClass(kInternetEventClass), andEventID: AEEventID(kAEGetURL))
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
+    private var tokenRequestRetries: Int = 0
     let presentAccountStatus = Promise(false)
     fileprivate let nofityDisposable:MetaDisposable = MetaDisposable()
     var containerUrl:String!
@@ -104,6 +142,7 @@ class AppDelegate: NSResponder, NSApplicationDelegate, NSUserNotificationCenterD
         }
         
         let appGroupName = ApiEnvironment.group
+
         guard let containerUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupName) else {
             return
         }
@@ -212,6 +251,9 @@ class AppDelegate: NSResponder, NSApplicationDelegate, NSUserNotificationCenterD
             LSSetDefaultHandlerForURLScheme("tg" as CFString, bundleId as CFString)
         }
         
+        NotificationCenter.default.addObserver(self, selector: #selector(brokenConnection(_:)), name: .brokenConnection, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(serverError(_:)), name: .serverError, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(invalidToken(_:)), name: .invalidToken, object: nil)
         
         launchInterface()
         
@@ -490,12 +532,14 @@ class AppDelegate: NSResponder, NSApplicationDelegate, NSUserNotificationCenterD
                         |> map { account in
                             if let account = account {
                                 var settings: LaunchSettings?
+                                var circlesSettings = Circles.defaultConfig
                                 if let action = sharedContext.getLaunchActionOnce(for: account.id) {
                                     settings = LaunchSettings(applyText: nil, previousText: nil, navigation: action, openAtLaunch: true)
                                 } else {
                                     let semaphore = DispatchSemaphore(value: 0)
                                     _ = account.postbox.transaction { transaction in
                                         settings = transaction.getPreferencesEntry(key: ApplicationSpecificPreferencesKeys.launchSettings) as? LaunchSettings
+                                        circlesSettings = Circles.getSettings(transaction: transaction)
                                         semaphore.signal()
                                         }.start()
                                     semaphore.wait()
@@ -503,7 +547,7 @@ class AppDelegate: NSResponder, NSApplicationDelegate, NSUserNotificationCenterD
                               //  let tonContext = StoredTonContext(basePath: account.basePath, postbox: account.postbox, network: account.network, keychain: tonKeychain)
 
                                 let context = AccountContext(sharedContext: sharedApplicationContext.sharedContext, window: window, account: account)
-                                return AuthorizedApplicationContext(window: window, context: context, launchSettings: settings ?? LaunchSettings.defaultSettings)
+                                return AuthorizedApplicationContext(window: window, context: context, launchSettings: settings ?? LaunchSettings.defaultSettings, circlesSettings: circlesSettings)
                                 
                             } else {
                                 return nil
